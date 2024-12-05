@@ -1,0 +1,30 @@
+{% load static %}
+
+<div class="container d-flex justify-content-start align-items-center my-4">
+    <div class="col-12 col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form class="add-accounts-form" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="locality" class="form-label">Населений пункт</label>
+                        <select class="form-select locality" required>
+                            <option value="Зарічне">Зарічне</option>
+                            <option value="Черкаське">Черкаське</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="document" class="form-label">Додати файл (.xlsx, .xls)<span class="text-danger">*</span></label>
+                        <input class="form-control document" type="file" name="document" required>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary add-accounts-submit">Завантажити</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'pages/js/admin/tabs/add_accounts.js' %}" type="module"></script>

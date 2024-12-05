@@ -1,0 +1,1 @@
+from .vacancies import Base as VacanciesBase, VacanciesModel

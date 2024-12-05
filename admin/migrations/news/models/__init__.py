@@ -1,0 +1,1 @@
+from .news import Base as NewsBase, NewsModel

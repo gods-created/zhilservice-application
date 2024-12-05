@@ -1,0 +1,82 @@
+{% load static %}
+
+<div class="container my-4">
+    <div class="row row-cols-1 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 g-3">
+        <div class="col-12 col-lg-8 col-md-6 col-sm-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <table class="table text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Назва вакансіЇ</th>
+                            <th scope="col">Дії</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in vacancies %}
+                                <tr>
+                                    <td>
+                                        <p class="m-0 p-0">
+                                            {{ item.title }}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <button title="Видалити" class="btn p-0 m-0 delete-vacancy-submit" vacancy_id="{{ item.id }}">
+                                                ❌
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="pagination d-flex align-items-center justify-content-center w-100">
+                        <span class="step-links">
+                            {% if vacancies.has_previous %}
+                                <a href="?tab=vacancies_actions&page={{ vacancies.previous_page_number }}">
+                            {% else %}
+                                <a href="?tab=vacancies_actions&page={{ vacancies.number }}">
+                            {% endif %}
+                            &laquo;</a>
+                        
+                            <a class="current" href="?tab=vacancies_actions&page={{ vacancies.number }}">{{ vacancies.number }}</a>
+
+                            {% if vacancies.has_next %}
+                                <a href="?tab=vacancies_actions&page={{ vacancies.next_page_number }}">
+                            {% else %}
+                                <a href="?tab=vacancies_actions&page={{ vacancies.number }}">
+                            {% endif %}
+                            &raquo;</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4 col-md-6 col-sm-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form class="add-vacancy-form" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Назва вакансії</label>
+                            <input type="text" class="form-control title" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Опис вакансії</label>
+                            <textarea class="form-control description" rows="7" cols="5" style="resize: none;" required></textarea>
+                        </div>
+    
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary add-vacancy-submit">Додати</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'pages/js/admin/tabs/vacancies_actions.js' %}" type="module"></script>

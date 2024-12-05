@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'pages/css/bootstrap/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'pages/css/styles.css' %}">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div class="wrapper">
+        {% include 'pages/layouts/header.html' %}
+
+        <main>
+            {% block content %}
+
+            {% endblock %}
+        </main>
+
+        {% include 'pages/layouts/footer.html' %}
+        {% include 'pages/layouts/alert.html' %}
+        {% include 'pages/user/modals/debt.html' %}
+    </div>
+
+    <script SRC="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js" integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.8/axios.min.js" integrity="sha512-v8+bPcpk4Sj7CKB11+gK/FnsbgQ15jTwZamnBf/xDmiQDcgOIYufBo6Acu1y30vrk8gg5su4x0CG3zfPaq5Fcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'pages/js/jquery.js' %}"></script>
+    <script src="{% static 'pages/js/app.js' %}" type="module"></script>
+    <script src="{% static 'pages/js/requests.js' %}" type="module"></script>
+</body>
+</html>

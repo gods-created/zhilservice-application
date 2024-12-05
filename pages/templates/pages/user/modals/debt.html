@@ -1,0 +1,37 @@
+{% load static %}
+
+<div class="modal d-none debt-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Дізнатися заборгованість по рахунку</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p class="m-0 p-0"><span class="fw-bold">Пам'ятка!</span> Інформація по рахунку прийде на вказану Вами пошту. Якщо нещодавно Ваш борг був оплачений, але сума не змінилась, не переймайтесь, бухгалтерія оновлює рахунки протягом декількох днів.</p>
+            <form id="get-account-info" class="mt-3">
+                <div class="mb-3">
+                    <label for="email">Ваша пошта:</label>
+                    <input type="email" class="email form-control" placeholder="example@gmail.com">
+                </div>
+
+                <div class="mb-3">
+                    <label for="current-account-number">Особовий рахунок:</label>
+                    <input type="number" class="current-account-number form-control" min="1" placeholder="1818">
+                </div>
+
+                <div class="mb-0">
+                    <label for="locality">Населений пункт:</label>
+                    <select class="locality form-select">
+                        <option value="Зарічне" selected>Зарічне</option>
+                        <option value="Черкаське">Черкаське</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark get-info-button">Отримати інформацію</button>
+        </div>
+      </div>
+    </div>
+</div>

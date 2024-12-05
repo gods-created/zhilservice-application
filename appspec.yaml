@@ -1,0 +1,6 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destionation: /home/ec2-user
+file_exists_behavior: OVERWRITE

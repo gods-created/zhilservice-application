@@ -1,0 +1,40 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+
+{% block title %}Авторизація{% endblock %}
+    
+{% block content %}
+    <div class="container d-flex justify-content-center align-items-center my-4">
+        <div class="row row-col-1">
+            <div class="col">
+                <div class="card border-0 p-0">
+                    <div class="card-body bg-dark rounded-3">
+                        <h4 class="text-light text-center mb-3">Вхід до панелі адміністратора</h4>
+                        <form>
+                            <input type="hidden" value="{{ app_secret_key }}" id="app-secret-key" >
+
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="admin-email" placeholder="example@gmail.com">
+                                <label for="admin-email">Пошта</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="admin-password" placeholder="">
+                                <label for="admin-password">Пароль</label>
+                            </div>
+
+                            <div class="form-check text-start mb-3 text-light">
+                                <input class="form-check-input" type="checkbox" value="remember-me" id="flex-check-default">
+                                <label class="form-check-label" for="flex-check-default">
+                                    Запам'ятати
+                                </label>
+                            </div>
+                            <button class="btn btn-outline-light w-100 py-2 admin-auth-button" type="submit">Увійти</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'pages/js/admin/auth.js' %}" type="module"></script>
+{% endblock %}

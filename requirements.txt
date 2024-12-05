@@ -1,0 +1,12 @@
+django
+django-cors-headers
+openpyxl
+boto3
+python-dotenv
+loguru
+xlrd
+celery
+SQLAlchemy
+alembic
+pyjwt
+# brew install libreoffice 

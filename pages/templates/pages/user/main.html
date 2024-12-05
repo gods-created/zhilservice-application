@@ -1,0 +1,74 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}Головна сторінка{% endblock %}
+
+{% block content %}
+    <div class="py-5 bg-body-tertiary">
+        <div class="container">
+            {% if news.object_list %}
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2">
+                    {% for item in news %}
+                        <div class="col">
+                            <div class="card shadow-sm bg-dark text-white">
+                                <div class="ratio ratio-1x1">
+                                    <iframe 
+                                        src="{{ item.link }}#toolbar=0" 
+                                        frameborder="0"
+                                        class="p-3"
+                                        width="400"
+                                        height="400"
+                                        scrolling="no"
+                                    >
+                                    </iframe>
+                                </div>
+                                <div class="card-body border-top border-1 border-white">
+                                    <div class="d-flex flex-column justify-content-center align-items-center">
+                                        <p class="m-0 my-1 text-center card-text">
+                                            {{ item.title }}
+                                        </p>
+                                        <div class="btn-group my-1">
+                                            <a href="{{ item.link }}" target="_blank" type="button" class="btn btn-sm btn-outline-light">Детальніше</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <!-- cols -->
+                </div>
+                
+                <div class="mt-5 w-100 d-flex align-items-center justify-content-center">
+                    <span class="step-links">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination mb-0">
+                                <li class="page-item">
+                                    {% if news.has_previous %}
+                                        <a class="page-link" href="?page={{ news.previous_page_number }}">
+                                    {% else %}
+                                        <a class="page-link" href="?page={{ news.number }}">
+                                    {% endif %}
+                                    &laquo;</a>
+                                </li>
+
+
+                                <li class="page-item">
+                                    <a href="" class="page-link">{{ news.number }}</a>
+                                </li>
+
+                                <li class="page-item">
+                                    {% if news.has_next %}
+                                        <a class="page-link" href="?page={{ news.next_page_number }}">
+                                    {% else %}
+                                        <a class="page-link" href="?page={{ news.number }}">
+                                    {% endif %}
+                                    &raquo;</a>
+                                </li>
+
+                    </span>
+                </div>
+            {% else %}
+                <p class="m-0 p-0">Немає жодної новини.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
