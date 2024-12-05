@@ -28,5 +28,4 @@ jobs:
       env:
         SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
       run: |
-        echo $SERVER_PASSWORD
-        sshpass -p "$SERVER_PASSWORD" scp -r "ec2-user@3.92.50.187:/home/ec2-user/zhilservice/admin/databases/*" ./admin/databases/
+        sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no -r "ec2-user@3.92.50.187:/home/ec2-user/zhilservice/admin/databases/*" ./admin/databases/
