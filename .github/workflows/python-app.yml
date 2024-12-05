@@ -14,22 +14,18 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     environment: APP
-    
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
+    - name: Check out repository
+      uses: actions/checkout@v3
+
     - name: Install dependencies
+      run: sudo apt update && sudo apt install sshpass -y
+
+    - name: Securely copy databases from remote server
+      env:
+        SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install -r requirements.txt
-    - name: Install topical databases
-      run: |
-        sudo apt update 
-        sudo apt install sshpass -y
-        sshpass -p "$SERVER_PASSWORD" scp "ec2-user@3.92.50.187:/home/ec2-user/zhilservice/admin/databases/*" ./admin/databases/
+        sshpass -p "$SERVER_PASSWORD" scp -r "ec2-user@3.92.50.187:/home/ec2-user/zhilservice/admin/databases/*" ./admin/databases/
