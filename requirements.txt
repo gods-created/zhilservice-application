@@ -9,4 +9,3 @@ celery
 SQLAlchemy
 alembic
 pyjwt
-# brew install libreoffice 

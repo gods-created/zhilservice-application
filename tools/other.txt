@@ -1,0 +1,5 @@
+brew install libreoffice - install brew on Mac
+sudo yum install -y xorg-x11-server-Xvfb - for launching soffice without display
+/opt/libreoffice7.6/program/soffice - dir for launching soffice command
+client_max_body_size 50M; - if Nginx returns 413 error (input in server path in nginx.conf)
+python -m celery -A user.tasks.send_message_to_mail:app worker --queues=high_priority --concurrency=1  & python manage.py runserver 0.0.0.0:8001 - command for launching app

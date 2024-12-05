@@ -171,7 +171,7 @@ class AdminAuth(Base):
 
             row = db.scalars(stmt).first()
             if not row:
-                raise Exception('Даних не знайдено.')
+                raise Exception('Не вірний пароль або пошта.')
             
             response_json['data'] = row.to_json()
             response_json['status'] = 'success'
