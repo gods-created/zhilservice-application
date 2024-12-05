@@ -53,8 +53,10 @@ class NewsActions(Base):
     
     def __convert_file(self, filename: str) -> str:
         new_filename = sub(r'\.(docx|doc)$', '.pdf', filename)
+        soffice_run_command = getenv('SOFFICE_RUN_COMMAND', 'soffice')
+
         run([
-            'soffice',
+            soffice_run_command,
             '--headless',
             '--convert-to', 'pdf',
             '--print-to-file', new_filename,

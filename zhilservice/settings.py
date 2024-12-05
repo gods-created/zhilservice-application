@@ -28,8 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'corsheaders',
-    '127.0.0.1',
-    '46.211.233.226'
+    '*'
 ]
 
 CORS_ALLOWED_ORIGINS = []
