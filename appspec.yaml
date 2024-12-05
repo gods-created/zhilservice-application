@@ -2,5 +2,5 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destionation: /home/ec2-user/zhilservice
+    destination: /home/ec2-user/zhilservice
 file_exists_behavior: OVERWRITE
