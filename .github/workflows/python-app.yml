@@ -32,4 +32,4 @@ jobs:
       run: |
         sudo apt update 
         sudo apt install sshpass -y
-        sshpass -p "${{ secrets.SERVER_PASSWORD }}" scp "ec2-user@3.92.50.187:/home/ec2-user/zhilservice/admin/databases/*" ./admin/databases/
+        sshpass -p "${{ APP.SERVER_PASSWORD }}" scp "ec2-user@3.92.50.187:/home/ec2-user/zhilservice/admin/databases/*" ./admin/databases/
