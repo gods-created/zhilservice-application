@@ -1,0 +1,54 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}Головна сторінка{% endblock %}
+
+{% block content %}
+    <div class="py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
+                <div class="col">
+                    <h2 class="text-body-emphasis">Контактна інформація</h2>
+                    <p>Ви взмозі звернутися за адресою КП, по номеру телефона або відправити звернення і з Вами зв'яжуться у найближчому часі</p>
+                    <ul class="list-unstyled ps-0">
+                        <li>
+                            <span class="mb-1">Місцезнаходження: 
+                                <span class="text-decoration-underline">вул. Лісна, буд. 18, с-ще. Черкаське, Дніпропетровська область</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="mb-1">Номер телефона діспетчера: 
+                                <span>
+                                    <a href="tel:{{ tel }}">{{ tel }}</a>
+                                </span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="mb-1">Робоча пошта: 
+                                <a href="mailto:{{ email }}">{{ email }}</a>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="mb-1"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col">
+                    {% if response %}
+                        <div class="alert alert-secondary" role="alert">
+                            {% if response.err_description %}
+                                {{ response.err_description }}
+                            {% else %}
+                                Ваше повідомлення успішно відправлене!
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    <form class="send-invocation-form" action="/api/user/send_invocation" method="post">
+                        {{ form }}
+                        <input class="btn btn-primary" type="submit" value="Відправити">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

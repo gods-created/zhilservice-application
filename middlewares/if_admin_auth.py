@@ -23,7 +23,7 @@ class IfAdminAuthMiddleware:
 
             if not all((is_authenticated, if_token)):
                 if '/auth' not in path:
-                    return HttpResponseRedirect('/admin/auth')
+                    return HttpResponseRedirect('/admin/auth/')
             else:
                 if '/auth' in path:
                     return HttpResponseRedirect('/admin')

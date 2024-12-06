@@ -3,8 +3,10 @@ from django.http import HttpRequest
 from django.core.paginator import Paginator
 from admin.modules.news_actions import NewsActions
 from admin.modules.vacancies_actions import VacanciesActions
+from user.forms import SendInvocation as SendInvocationForm
 from typing import Any 
 from os import getenv 
+import json
 
 async def get_elements(page: int = 1, items: str = 'news') -> list:
     response_json = {}
@@ -75,9 +77,45 @@ async def _vacancies_page(request) -> Any:
         all_vacancies = await get_elements(page, 'vacancies')
         paginator = Paginator(all_vacancies, 12)
         vacancies = paginator.get_page(page) 
-        tel = getenv('COMPANY_TELEPHONE_NUMBER', '+')
+        tel = getenv('HR_TELEPHONE_NUMBER', '+')
 
         return render(request, 'pages/user/vacancies.html', {'vacancies': vacancies, 'tel': tel})
+
+    except (Exception, ) as e:
+        return HttpRequest(
+            str(e),
+            content_type='text/html; charset=utf-8',
+            status=status
+        )
+
+async def _contacts_page(request) -> Any:
+    status = 500
+
+    try:
+        method = request.method
+        if method != 'GET':
+            status = 405
+            raise Exception(f'Використання методу {method} неможливе.')
+
+        tel = getenv('DISPETCHER_TELEPHONE_NUMBER', '+')
+        email = getenv('COMPANY_EMAIL', '')
+        send_invocation_response = json.loads(request.COOKIES.get('send_invocation_response', '{}'))
+            
+        response = render(
+            request, 'pages/user/contacts.html', {
+                'form': SendInvocationForm,
+                'response': send_invocation_response,
+                'tel': tel,
+                'email': email,
+            }
+        )
+
+        if send_invocation_response:
+            response.delete_cookie(
+                'send_invocation_response'
+            )
+
+        return response
 
     except (Exception, ) as e:
         return HttpRequest(

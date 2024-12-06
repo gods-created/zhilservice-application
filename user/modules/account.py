@@ -6,13 +6,11 @@ from openpyxl import load_workbook
 from xlrd import open_workbook
 from re import search
 from ..tasks import send_message_to_mail
+from .base import Base
 
-class Account:
+class Account(Base):
     def __init__(self):
-        self.response_json = {
-            'status': 'error',
-            'err_description': ''
-        }
+        super().__init__()
 
         self.pattern = rf'лс:\s*[NUMBER]\s*СС:'
         self.s3_bucket = None
@@ -161,6 +159,7 @@ class Account:
         try:
             send_message_to_mail.apply_async(
                 (current_account_number, email, data),
+                {'action': 'account'},
                 queue='high_priority'
             )
 

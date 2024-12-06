@@ -111,7 +111,7 @@ export function _auth_admin() {
                     Cookies.set('password', password_value);
                 }
 
-                return window.location.href = '/admin';
+                return window.location.reload();
             }
 
             edit_button_state(ADMIN_AUTH_BUTTON, false, ADMIN_AUTH_BUTTON_TEXT)

@@ -101,9 +101,34 @@ function close_all_modals() {
     return;
 }
 
+function correct_phone_input() {
+    const FORM = $('.send-invocation-form');
+    if (FORM === null) {
+        return;
+    };
+
+    const PHONE_INPUT = FORM.find('.phone');
+    PHONE_INPUT.on('input', function () {
+        let phone_value = $(this).val().replace(/(?!^)\+|[^\d+]/g, '');
+
+        if (phone_value.length < 4) {
+            phone_value = '+380';
+        }
+
+        if (phone_value.length > 13) {
+            phone_value = phone_value.slice(0, 13)
+        }
+
+        $(this).val(
+            phone_value
+        );
+    })
+}
+
 $(document).ready(async () => {
     load_current_year();
     underline_active_tab();
+    correct_phone_input();
 
     const OPEN_DEBT_MODAL_BUTTON = $('.open-debt-modal');
 

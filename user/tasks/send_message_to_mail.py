@@ -18,27 +18,47 @@ app.conf.task_queues = {
 app.autodiscover_tasks()
 
 @app.task
-def send_message_to_mail(current_account_number: str, email: str, data: list) -> Any:
+def send_message_to_mail(*args, **kwargs) -> Any:
     try:
-        if len(data) == 4:
-            data = list(map(lambda x: '0' if len(str(x).replace(' ', '')) == 0 else x, data))
-            total, trash, flat, warming = data
-        else:
-            total = trash = flat = warming = '0'
-
-        message = f'<h3>Обов\'язкові платежі по рахунку №{current_account_number}:</h3>' \
-                f'<p style="margin:0px;">вивіз сміття: <span style="font-weight:bold;">{trash} грн.</span></p>' \
-                f'<p style="margin:0px;">квартплата: <span style="font-weight:bold;">{flat} грн.</span></p>' \
-                f'<p style="margin:0px;">теплопостачання: <span style="font-weight:bold;">{warming} грн.</span></p>' \
-                f'<p style="margin:0px;">всього: <span style="font-weight:bold;">{total} грн.</span></p><br />' \
-                f'<p style="margin:0px;">Дякуюємо, що Ви за нами і гарного дня! З повагою, КП "Жилсервіс".' 
+        action = kwargs.get('action')
+        if not action:
+            return
         
-        subject = 'Повідомлення від КП "Жилсервіс"'
+        base_email = 'zilservise@gmail.com'
+        subject = message = ''
+        email = base_email
+
+        if action == 'account':
+            current_account_number, email, data = args
+
+            if len(data) == 4:
+                data = list(map(lambda x: '0' if len(str(x).replace(' ', '')) == 0 else x, data))
+                total, trash, flat, warming = data
+            else:
+                total = trash = flat = warming = '0'
+
+            message = f'<h3>Обов\'язкові платежі по рахунку №{current_account_number}:</h3>' \
+                    f'<p style="margin:0px;">вивіз сміття: <span style="font-weight:bold;">{trash} грн.</span></p>' \
+                    f'<p style="margin:0px;">квартплата: <span style="font-weight:bold;">{flat} грн.</span></p>' \
+                    f'<p style="margin:0px;">теплопостачання: <span style="font-weight:bold;">{warming} грн.</span></p>' \
+                    f'<p style="margin:0px;">всього: <span style="font-weight:bold;">{total} грн.</span></p><br />' \
+                    f'<p style="margin:0px;">Дякуюємо, що Ви за нами і гарного дня! З повагою, КП "Жилсервіс".'
+            
+            subject = 'Повідомлення від КП "Жилсервіс"'
+        
+        elif action == 'invocation':
+            fullname, phone, messanger, text = args
+            message = f'<h3>Звернення від {fullname}</h3>' \
+                      f'<p style="margin:0px;">Номер телефону: <span style="font-weight:bold;">{phone}</span></p>' \
+                      f'<p style="margin:0px;">Мессенджер для зворотнього зв\'язку: <span style="font-weight:bold;">{messanger}</span></p>' \
+                      f'<p style="margin:0px;">Текст звернення: <span style="font-weight:bold;">"{text}"</span></p>'
+                      
+            subject = f'Звернення від {fullname}'
 
         send_mail(
             subject=subject,
             message=message,
-            from_email='tersk.bo@gmail.com',
+            from_email=base_email,
             recipient_list=[email],
             html_message=message,
             fail_silently=False
