@@ -7,8 +7,6 @@ class RedirectToHomePageMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        path = request.path.strip('/')
-        print(path)
         try:
             resolve(request.path)
         except Resolver404:

@@ -8,9 +8,9 @@ from .views import (
 )
 
 urlpatterns = [
-    path('news/', _main_page),
-    path('vacancies/', _vacancies_page),
-    path('contacts/', _contacts_page),
+    re_path(r'^news/?$', _main_page),
+    re_path(r'^vacancies/?$', _vacancies_page),
+    re_path(r'^contacts/?$', _contacts_page),
 
     re_path(r'^admin/auth/?$', _admin_auth),
     re_path(r'^admin/?$', _admin_panel),
