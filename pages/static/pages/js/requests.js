@@ -174,13 +174,14 @@ export async function _delete_news(news_id) {
     return show_alert(status, description);
 }
 
-export async function _add_news(title, document) {
+export async function _add_news(title, image, news_description) {
     let status, description;
     
     try {
         const formData = new FormData();
         formData.append('title', title);
-        formData.append('documents', document);
+        formData.append('description', news_description);
+        formData.append('image', image);
 
         const request = await axios.post(`${BASE_URL}/api/admin/add_news`, formData, { HEADERS });
         const response = request.data;
@@ -216,7 +217,7 @@ export async function _add_vacancy(title, vacancy_description) {
         status = response.status;
         const err_description = response.err_description;
 
-        description = status !== 'success' ? err_description : 'Новина успішно завантажена!';
+        description = status !== 'success' ? err_description : 'Вакансія успішно завантажена!';
     } catch (err) {
         status = 'error';
         description = err.message;
@@ -244,6 +245,61 @@ export async function _delete_vacancy(vacancy_id) {
         const err_description = response.err_description;
 
         description = status !== 'success' ? err_description : 'Вакансію успішно видалено!';
+    } catch (err) {
+        status = 'error';
+        description = err.message;
+    }
+
+    if (status === 'success') {
+        window.location.href = HREF;
+        return;
+    }
+
+    return show_alert(status, description);
+}
+
+export async function _add_purchase(short_description, file) {
+    let status, description;
+    
+    try {
+        const formData = new FormData();
+        formData.append('short_description', short_description);
+        formData.append('file', file);
+
+        const request = await axios.post(`${BASE_URL}/api/admin/add_purchase`, formData, { HEADERS });
+        const response = request.data;
+
+        status = response.status;
+        const err_description = response.err_description;
+
+        description = status !== 'success' ? err_description : 'Закупівля успішно завантажена!';
+    } catch (err) {
+        status = 'error';
+        description = err.message;
+    }
+
+    if (status === 'success') {
+        window.location.href = HREF;
+        return;
+    }
+
+    return show_alert(status, description);
+}
+
+export async function _delete_purchase(purchases_id) {
+    let status, description;
+    
+    try {
+        const formData = new FormData();
+        formData.append('purchases_id', purchases_id);
+
+        const request = await axios.post(`${BASE_URL}/api/admin/delete_purchase`, formData, { HEADERS });
+        const response = request.data;
+
+        status = response.status;
+        const err_description = response.err_description;
+
+        description = status !== 'success' ? err_description : 'Закупівлю успішно видалено!';
     } catch (err) {
         status = 'error';
         description = err.message;

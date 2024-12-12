@@ -7,23 +7,24 @@
     <div class="py-5 bg-body-tertiary">
         <div class="container">
             {% if vacancies.object_list %}
-                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-2">
+                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-2">
                     {% for item in vacancies %}
                         <div class="col">
                             <div class="card shadow bg-light text-dark">
                                 <div class="card-body border-bottom border-dark border-2">
                                     <div class="d-flex flex-column justify-content-center align-items-center">
                                         <p class="m-0 my-1 text-center card-text">
-                                            <span class="d-block mb-2 fw-bold">
+                                            <span class="d-block mb-2 fw-bold vacancy-title">
                                                 {{ item.title }}
                                             </span>
 
-                                            <span class="d-block mb-2">
+                                            <span class="d-none mb-2 vacancy-description description-item">
                                                 {{ item.description }}
                                             </span>
                                         </p>
-                                        <div class="btn-group my-1">
-                                            <a href="tel:{{ tel }}" target="_blank" type="button" class="btn btn-sm btn-outline-dark">Зателефонувати</a>
+                                        <div class="d-flex flex-column my-1">
+                                            <a href="" type="button" class="btn btn-sm btn-outline-dark more-info-button my-1">Детальніше</a>
+                                            <a href="tel:{{ tel }}" target="_blank" type="button" class="btn btn-sm btn-outline-dark my-1">Зателефонувати</a>
                                         </div>
                                     </div>
                                 </div>
@@ -59,7 +60,8 @@
                                     {% endif %}
                                     &raquo;</a>
                                 </li>
-
+                            </ul>
+                        </nav>
                     </span>
                 </div>
             {% else %}

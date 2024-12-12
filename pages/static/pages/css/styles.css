@@ -40,3 +40,9 @@ footer {
   word-wrap: break-word !important;
   overflow-wrap: break-word !important;
 }
+
+.ql-editor {
+  height: 300px;
+  min-height: 300px;
+  max-height: 300px;
+}

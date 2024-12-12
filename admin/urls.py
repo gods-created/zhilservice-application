@@ -16,16 +16,16 @@ Including another URLconf
 """
 from django.urls import path
 from .views import (
-    _news, _add_news, _update_news, 
+    _news, _add_news, 
     _delete_news, _delete_all_news, _auth_admin, 
     _add_accounts, _add_vacancy, _vacancies, 
-    _delete_vacancy, _delete_all_vacancies
+    _delete_vacancy, _delete_all_vacancies,
+    _purchases, _add_purchase, _delete_purchase
 )
 
 urlpatterns = [
     path('news', _news),
     path('add_news', _add_news),
-    path('update_news', _update_news),
     path('delete_news', _delete_news),
     path('delete_all_news', _delete_all_news),
 
@@ -36,5 +36,9 @@ urlpatterns = [
     path('vacancies', _vacancies),
     path('add_vacancy', _add_vacancy),
     path('delete_vacancy', _delete_vacancy),
-    path('delete_all_vacancies', _delete_all_vacancies)
+    path('delete_all_vacancies', _delete_all_vacancies),
+
+    path('purchases', _purchases),
+    path('add_purchase', _add_purchase),
+    path('delete_purchase', _delete_purchase),
 ]

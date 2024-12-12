@@ -1,0 +1,71 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}Закупівлі{% endblock %}
+
+{% block content %}
+
+    <div class="py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
+                <div class="col col-lg-6 col-md-12 col-sm-12">
+                    <div class="border border-0.5 border-secondary p-1 rounded-3 bg-white">
+                        <div id="prom_state_purchase"></div>
+                    </div>
+                </div>
+
+                <div class="col col-lg-6 col-md-12 col-sm-12">
+                    <table class="table text-center table-light">
+                        <thead>
+                          <tr>
+                            <th scope="col">Короткий опис змісту файла</th>
+                            <th scope="col">Посилання на файл</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for item in purchases %}
+                            <tr>
+                              <td>{{ item.short_description }}</td>
+                              <td>
+                                <a class="m-0 p-0" href="{{ item.file_source }}" target="_blank">Завантажити</a>
+                              </td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                    <div class="mt-5 w-100 d-flex align-items-center justify-content-center">
+                      <span class="step-links">
+                          <nav aria-label="Page navigation example">
+                              <ul class="pagination mb-0">
+                                  <li class="page-item">
+                                      {% if purchases.has_previous %}
+                                          <a class="page-link" href="?page={{ purchases.previous_page_number }}">
+                                      {% else %}
+                                          <a class="page-link" href="?page={{ purchases.number }}">
+                                      {% endif %}
+                                      &laquo;</a>
+                                  </li>
+  
+  
+                                  <li class="page-item">
+                                      <a href="" class="page-link">{{ purchases.number }}</a>
+                                  </li>
+  
+                                  <li class="page-item">
+                                      {% if purchases.has_next %}
+                                          <a class="page-link" href="?page={{ purchases.next_page_number }}">
+                                      {% else %}
+                                          <a class="page-link" href="?page={{ purchases.number }}">
+                                      {% endif %}
+                                      &raquo;</a>
+                                  </li>
+                              </ul>
+                            </nav>
+                      </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

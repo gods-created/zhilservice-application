@@ -3,23 +3,31 @@ from django.http import HttpRequest
 from django.core.paginator import Paginator
 from admin.modules.news_actions import NewsActions
 from admin.modules.vacancies_actions import VacanciesActions
+from admin.modules.purchases_actions import PurchasesActions
 from user.forms import SendInvocation as SendInvocationForm
 from typing import Any 
-from os import getenv 
+from os import getenv
 import json
 
-async def get_elements(page: int = 1, items: str = 'news') -> list:
+async def get_elements(items: str = 'news') -> list:
     response_json = {}
 
     if items == 'news':
         async with NewsActions() as module:
             response_json.update(
-                await module.news(page)
+                await module.news()
             )
+
     elif items == 'vacancies':
         async with VacanciesActions() as module:
             response_json.update(
-                await module.select_all_vacancies(page)
+                await module.select_all_vacancies()
+            )
+
+    elif items == 'purchases':
+        async with PurchasesActions() as module:
+            response_json.update(
+                await module.purchases()
             )
 
     if response_json.get('status', 'error') == 'error':
@@ -28,10 +36,6 @@ async def get_elements(page: int = 1, items: str = 'news') -> list:
         )
 
     all_items = response_json.get('items', [])
-
-    if not all_items and page > 1:
-        page -= 1
-        return await get_elements(page)
 
     return all_items
 
@@ -48,11 +52,40 @@ async def _main_page(request) -> Any:
             request.GET.get('page', '1')
         )
 
-        all_news = await get_elements(page, 'news')
+        all_news = await get_elements('news')
         paginator = Paginator(all_news, 12)
-        news = paginator.get_page(page) 
+        news = paginator.get_page(page)
 
         return render(request, 'pages/user/main.html', {'news': news})
+
+    except (Exception, ) as e:
+        return HttpRequest(
+            str(e),
+            content_type='text/html; charset=utf-8',
+            status=status
+        )
+
+async def _purchases_page(request) -> Any:
+    status = 500 
+
+    try:
+        method = request.method
+        if method != 'GET':
+            status=405
+            raise Exception(f'Використання методу {method} неможливе.')
+
+        page = int(
+            request.GET.get('page', '1')
+        )
+
+        all_items = await get_elements('purchases')
+        paginator = Paginator(all_items, 12)
+        purchases = paginator.get_page(page)
+
+        status = 200
+        return render(request, 'pages/user/purchases.html', {
+            'purchases': purchases
+        })
 
     except (Exception, ) as e:
         return HttpRequest(
@@ -74,7 +107,7 @@ async def _vacancies_page(request) -> Any:
             request.GET.get('page', '1')
         )
 
-        all_vacancies = await get_elements(page, 'vacancies')
+        all_vacancies = await get_elements('vacancies')
         paginator = Paginator(all_vacancies, 12)
         vacancies = paginator.get_page(page) 
         tel = getenv('HR_TELEPHONE_NUMBER', '+')
@@ -163,23 +196,20 @@ async def _admin_panel(request) -> Any:
                 request.GET.get('page', '1')
             )
 
+            elements = ''
             if tab == 'news_actions':
-                all_news =  await get_elements(page, 'news')
-                paginator = Paginator(all_news, 12)
-                news = paginator.get_page(page) 
-
-                data['news'] = news
-
+                elements = 'news'
+            elif tab == 'purchases_actions':
+                elements = 'purchases'
             elif tab == 'vacancies_actions':
-                all_vacancies =  await get_elements(page, 'vacancies')
-                paginator = Paginator(all_vacancies, 12)
-                vacancies = paginator.get_page(page) 
+                elements = 'vacancies'
 
-                data['vacancies'] = vacancies
+            all_news = await get_elements(elements)
+            paginator = Paginator(all_news, 12)
+            items = paginator.get_page(page)
 
-            else:
-                pass
-
+            data[elements] = items
+            
         return render(request, 'pages/admin/panel.html', data)
     
     except (Exception, ) as e:

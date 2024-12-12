@@ -5,22 +5,32 @@
         <div class="col-12 col-lg-8 col-md-6 col-sm-12">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <table class="table text-center">
+                    <table class="table text-center" style="border-collapse: collapse; width: 100%; table-layout: fixed;">
                         <thead>
                         <tr>
-                            <th scope="col">Посилання</th>
+                            <th scope="col">Назва новини</th>
+                            <th scope="col">Титульне зображення</th>
                             <th scope="col">Дії</th>
                         </tr>
                         </thead>
                         <tbody>
                             {% for item in news %}
                                 <tr>
-                                    <td>
-                                        <a href="{{ item.link }}" target="_blank">{{ item.filename }}</a>
+                                    <td style="height: 50px;">
+                                        <div class="d-flex align-items-center justify-content-center w-100 h-100">
+                                            <p class="m-0 p-0">
+                                                {{ item.title }}
+                                            </p>
+                                        </div>
                                     </td>
-                                    <td>
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <button title="Видалити" class="btn p-0 m-0 delete-news-submit" news_id="{{ item.news_id }}">
+                                    <td style="height: 50px;">
+                                        <div class="d-flex align-items-center justify-content-center w-100 h-100">
+                                            <img class="img-fluid" src="{{ item.image_source }}" alt="{{ item.image_source }}" width="45" height="45" />
+                                        </div>
+                                    </td>
+                                    <td style="height: 50px;">
+                                        <div class="d-flex align-items-center justify-content-center w-100 h-100">
+                                            <button title="Видалити" class="btn p-0 m-0 delete-news-submit" news_id="{{ item.id }}">
                                                 ❌
                                             </button>
                                         </div>
@@ -63,8 +73,13 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="document" class="form-label">Додати файл з новиною (.docx, .doc)<span class="text-danger">*</span></label>
-                            <input class="form-control document" type="file" name="document" required>
+                            <label for="image" class="form-label">Додати титульне зображення (.png, .jpg, .svg)<span class="text-danger">*</span></label>
+                            <input class="form-control image" type="file" name="image" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Опис новини</label>
+                            <div class="description editor"></div>
                         </div>
     
                         <div class="text-center">

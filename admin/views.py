@@ -1,12 +1,8 @@
 from django.shortcuts import render
 from typing import Any
-from .modules import NewsActions, VacanciesActions, AdminAuth
+from .modules import NewsActions, VacanciesActions, AdminAuth, PurchasesActions
 from django.http import HttpResponse, JsonResponse
 from .forms import *
-from time import time 
-from loguru import logger
-
-# Create your views here.
 
 async def _add_accounts(request) -> Any:
     status = 500 
@@ -168,10 +164,8 @@ async def _news(request) -> Any:
             status = 405
             raise Exception(f'Використання методу {method} неможливе.')
 
-        page = request.GET.get('page', '')
-
         async with NewsActions() as module:
-            response_json = await module.news(page)
+            response_json = await module.news()
 
         status = 200
         return JsonResponse(
@@ -203,37 +197,6 @@ async def _add_news(request) -> Any:
         data = form.to_json()
         async with NewsActions() as module:
             response_json = await module.add_news(data)
-
-        status = 200
-        return JsonResponse(
-            response_json,
-            status=status
-        )
-
-    except (Exception, ) as e:
-        return HttpResponse(
-            str(e),
-            content_type='text/html; charset=utf-8',
-            status=status
-        )
-
-async def _update_news(request) -> Any:
-    status = 500
-
-    try:
-        method = request.method 
-        if method != 'POST':
-            status = 405
-            raise Exception(f'Використання методу {method} неможливе.')
-
-        form = UpdateNews(request.POST, request.FILES)
-        if not form.is_valid():
-            status = 422
-            raise Exception('Некоректно заповнена форма.')
-        
-        data = form.to_json()
-        async with NewsActions() as module:
-            response_json = await module.update_news(data)
 
         status = 200
         return JsonResponse(
@@ -290,6 +253,95 @@ async def _delete_all_news(request) -> Any:
 
         async with NewsActions() as module:
             response_json = await module.delete_all_news()
+
+        status = 200
+        return JsonResponse(
+            response_json,
+            status=status
+        )
+
+    except (Exception, ) as e:
+        return HttpResponse(
+            str(e),
+            content_type='text/html; charset=utf-8',
+            status=status
+        )
+    
+
+
+async def _purchases(request) -> Any:
+    status = 500
+
+    try:
+        method = request.method
+        if method != 'GET':
+            status = 405
+            raise Exception(f'Використання методу {method} неможливе.')
+
+        async with PurchasesActions() as module:
+            response_json = await module.purchases()
+
+        status = 200
+        return JsonResponse(
+            response_json,
+            status=status
+        )
+
+    except (Exception, ) as e:
+        return HttpResponse(
+            str(e),
+            content_type='text/html; charset=utf-8',
+            status=status
+        )
+
+async def _add_purchase(request) -> Any:
+    status = 500
+
+    try:
+        method = request.method 
+        if method != 'POST':
+            status = 405
+            raise Exception(f'Використання методу {method} неможливе.')
+        
+        form = AddPurchase(request.POST, request.FILES)
+        if not form.is_valid():
+            status = 422
+            raise Exception('Некоректно заповнена форма.')
+        
+        data = form.to_json()
+        async with PurchasesActions() as module:
+            response_json = await module.add_purchase(data)
+
+        status = 200
+        return JsonResponse(
+            response_json,
+            status=status
+        )
+
+    except (Exception, ) as e:
+        return HttpResponse(
+            str(e),
+            content_type='text/html; charset=utf-8',
+            status=status
+        )
+
+async def _delete_purchase(request) -> Any:
+    status = 500
+
+    try:
+        method = request.method 
+        if method != 'POST':
+            status = 405
+            raise Exception(f'Використання методу {method} неможливе.')
+
+        form = DeletePurchase(request.POST)
+        if not form.is_valid():
+            status = 422
+            raise Exception('Некоректно заповнена форма.')
+        
+        data = form.to_json()
+        async with PurchasesActions() as module:
+            response_json = await module.delete_purchase(data)
 
         status = 200
         return JsonResponse(

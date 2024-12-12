@@ -4,11 +4,14 @@
 {% block title %}Панель адміністратора{% endblock %}
     
 {% block content %}
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
     <div class="bg-light shadow">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">        
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 px-0">
-                <li class="border-start border-end border-dark"><a href="?tab=add_accounts" class="text-dark nav-link px-2 add-accounts-block">Завантажити рахунок</a></li>
+                <li class="border-start border-end border-dark"><a href="?tab=add_accounts" class="text-dark nav-link px-2 add-accounts-block">Завантажити рахунки</a></li>
+                <li class="border-end border-dark"><a href="?tab=purchases_actions" class="text-dark nav-link px-2 purchases-actions-block">Редагувати закупівлі</a></li>
                 <li class=""><a href="?tab=news_actions" class="text-dark nav-link px-2 news-actions-block">Редагувати новини</a></li>
                 <li class="border-start border-end border-dark"><a href="?tab=vacancies_actions" class="text-dark nav-link px-2 vacancies-actions-block">Редагувати вакансії</a></li>
             </ul>
@@ -24,11 +27,14 @@
         {% include 'pages/admin/tabs/add_accounts.html' %}
     {% elif tab == 'news_actions' %}
         {% include 'pages/admin/tabs/news_actions.html' %}
+    {% elif tab == 'purchases_actions' %}
+        {% include 'pages/admin/tabs/purchases_actions.html' %}
     {% elif tab == 'vacancies_actions' %}
         {% include 'pages/admin/tabs/vacancies_actions.html' %}
     {% else %}
         {% include 'pages/admin/tabs/add_accounts.html' %}
     {% endif %}
 
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script src="{% static 'pages/js/admin/panel.js' %}" type="module"></script>
 {% endblock %}

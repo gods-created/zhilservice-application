@@ -12,10 +12,11 @@ class AdminAuth(Base):
     def __init__(self):
         super().__init__()
         self.app_secret_key = getenv('APP_SECRET_KEY')
-        self.s3_bucket = None
         self.db = None
 
     async def __aenter__(self):
+        super().__enter__()
+        
         admin_auth_db_string_connection = getenv('ADMIN_AUTH_DB_STRING_CONNECTION')
         if admin_auth_db_string_connection:
             self.db = Session(
@@ -25,19 +26,6 @@ class AdminAuth(Base):
                     connect_args={'check_same_thread': False}
                 )
             )
-
-        aws_access_key_id = getenv('AWS_ACCESS_KEY_ID')
-        aws_secret_access_key = getenv('AWS_SECRET_ACCESS_KEY')
-        aws_bucket_name = self.aws_bucket_name
-        if all((
-            aws_access_key_id, aws_secret_access_key, aws_bucket_name
-        )):
-            self.s3_bucket = resource(
-                's3',
-                aws_access_key_id=aws_access_key_id,
-                aws_secret_access_key=aws_secret_access_key,
-                region_name='us-east-1'
-            ).Bucket(aws_bucket_name)
 
         return self
 

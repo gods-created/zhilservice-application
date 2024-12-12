@@ -1,11 +1,13 @@
 import { HREF, logout } from '../app.js';
 
 const LOGOUT_BTN = $('.logout');
+const TEXTAREA_CLASS = 'div.description.editor';
 
 function underline_active_tab() {
     let add_accounts_block = $('.add-accounts-block');
     let news_actions_block = $('.news-actions-block');
     let vacancies_actions_block = $('.vacancies-actions-block');
+    let purchases_actions_block = $('.purchases-actions-block');
 
     let target_link;
 
@@ -13,6 +15,8 @@ function underline_active_tab() {
         target_link = news_actions_block;
     } else if (HREF.includes('tab=vacancies_actions')) {
         target_link = vacancies_actions_block;
+    } else if (HREF.includes('tab=purchases_actions')) {
+        target_link = purchases_actions_block;
     } else {
         target_link = add_accounts_block;
     }
@@ -36,4 +40,10 @@ $(document).ready(async () => {
     LOGOUT_BTN.off('click').on('click', () => {
         return logout();
     })
+
+    if ($(TEXTAREA_CLASS).length !== 0) {
+        new Quill(TEXTAREA_CLASS, {
+            theme: 'snow'
+        });
+    }
 })

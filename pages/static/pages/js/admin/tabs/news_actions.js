@@ -18,18 +18,20 @@ ADD_NEWS_SUBMIT.off('click').on('click', async (e) => {
 
     const FORM = $('.add-news-form');
     const TITLE = FORM.find('.title');
-    const DOCUMENT = FORM.find('.document');
+    const IMAGE = FORM.find('.image');
+    const DESCRIPTION = FORM.find('.ql-editor');
     
     const title_value = TITLE.val()?.trim();
-    const document_files = DOCUMENT[0].files;
+    const image_files = IMAGE[0].files;
+    const description_value = DESCRIPTION.html();
 
-    if (title_value.length === 0 || document_files.length === 0) {
+    if (
+        title_value.length === 0 || image_files.length !== 1 || $(description_value).text()?.trim().length === 0
+    ) {
         return;
     }
-    
-    const document_value = document_files[0];
 
     edit_button_state(ADD_NEWS_SUBMIT);
-    await _add_news(title_value, document_value);
+    await _add_news(title_value, image_files[0], description_value);
     edit_button_state(ADD_NEWS_SUBMIT, false, ADD_NEWS_SUBMIT_TEXT);
 })

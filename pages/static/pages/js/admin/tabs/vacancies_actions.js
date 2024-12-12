@@ -11,13 +11,13 @@ ADD_VACANCY_SUBMIT.off('click').on('click', async (e) => {
 
     const FORM = $('.add-vacancy-form');
     const TITLE = FORM.find('.title');
-    const DESCRIPTION = FORM.find('.description');
+    const DESCRIPTION = FORM.find('.ql-editor');
 
     const title_value = TITLE.val()?.trim();
-    const description_value = DESCRIPTION.val()?.trim();
-
+    const description_value = DESCRIPTION.html();
+    
     if (
-        title_value.length === 0 || description_value.length === 0
+        title_value.length === 0 || $(description_value).text()?.trim().length === 0
     ) {
         return;
     }

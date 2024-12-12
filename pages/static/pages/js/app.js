@@ -6,6 +6,10 @@ export const HREF = window.location.href;
 
 export const CLOSE_MODAL_BUTTON = $('.btn-close');
 
+const OPEN_DEBT_MODAL_BUTTON = $('.open-debt-modal');
+const MORE_INFO_BUTTON = $('.more-info-button');
+const DESCRIPTION_ITEMS = $('.description-item');
+
 export function edit_button_state(obj, state=true, text='...') {
     obj.prop('disabled', state);
     obj.text(text);
@@ -125,14 +129,43 @@ function correct_phone_input() {
     })
 }
 
+function edit_description_items() {
+    if (DESCRIPTION_ITEMS.length > 0) {
+        DESCRIPTION_ITEMS.each(function(index, elem) {
+            const content = $(elem).text();
+            $(elem).empty();
+            $(elem).html(
+                content
+            )
+        })
+    }
+}
+
 $(document).ready(async () => {
     load_current_year();
     underline_active_tab();
     correct_phone_input();
-
-    const OPEN_DEBT_MODAL_BUTTON = $('.open-debt-modal');
+    edit_description_items();
+    
 
     OPEN_DEBT_MODAL_BUTTON.off('click').on('click', () => {
         open_debt_modal();
+    });
+
+    MORE_INFO_BUTTON.off('click').on('click', function (e) {
+        e.preventDefault();
+        
+        const parent = $(this).parent().parent();
+        const description_item = parent.find('span.description-item');
+
+        if (description_item.hasClass('d-block')) {
+            description_item.addClass('d-none').removeClass('d-block');
+            $(this).text('Детальніше');
+        } else {
+            description_item.addClass('d-block').removeClass('d-none');
+            $(this).text('Заховати');
+        }
+
+        return;
     });
 })

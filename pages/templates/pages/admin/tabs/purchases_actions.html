@@ -8,21 +8,27 @@
                     <table class="table text-center">
                         <thead>
                         <tr>
-                            <th scope="col">Назва вакансіЇ</th>
+                            <th scope="col">Короткий опис закупівлі</th>
+                            <th scope="col">Посилання на файл</th>
                             <th scope="col">Дії</th>
                         </tr>
                         </thead>
                         <tbody>
-                            {% for item in vacancies %}
+                            {% for item in purchases %}
                                 <tr>
                                     <td>
                                         <p class="m-0 p-0">
-                                            {{ item.title }}
+                                            {{ item.short_description }}
                                         </p>
                                     </td>
                                     <td>
+                                        <a class="m-0 p-0" href="{{ item.file_source }}" target="_blank">
+                                            Завантажити
+                                        </a>
+                                    </td>
+                                    <td>
                                         <div class="d-flex align-items-center justify-content-center">
-                                            <button title="Видалити" class="btn p-0 m-0 delete-vacancy-submit" vacancy_id="{{ item.id }}">
+                                            <button title="Видалити" class="btn p-0 m-0 delete-purchase-submit" purchase_id="{{ item.id }}">
                                                 ❌
                                             </button>
                                         </div>
@@ -34,19 +40,19 @@
 
                     <div class="pagination d-flex align-items-center justify-content-center w-100">
                         <span class="step-links">
-                            {% if vacancies.has_previous %}
-                                <a href="?tab=vacancies_actions&page={{ vacancies.previous_page_number }}">
+                            {% if purchases.has_previous %}
+                                <a href="?tab=purchases_actions&page={{ purchases.previous_page_number }}">
                             {% else %}
-                                <a href="?tab=vacancies_actions&page={{ vacancies.number }}">
+                                <a href="?tab=purchases_actions&page={{ purchases.number }}">
                             {% endif %}
                             &laquo;</a>
                         
-                            <a class="current" href="?tab=vacancies_actions&page={{ vacancies.number }}">{{ vacancies.number }}</a>
+                            <a class="current" href="?tab=purchases_actions&page={{ purchases.number }}">{{ purchases.number }}</a>
 
-                            {% if vacancies.has_next %}
-                                <a href="?tab=vacancies_actions&page={{ vacancies.next_page_number }}">
+                            {% if purchases.has_next %}
+                                <a href="?tab=purchases_actions&page={{ purchases.next_page_number }}">
                             {% else %}
-                                <a href="?tab=vacancies_actions&page={{ vacancies.number }}">
+                                <a href="?tab=purchases_actions&page={{ purchases.number }}">
                             {% endif %}
                             &raquo;</a>
                         </span>
@@ -58,19 +64,19 @@
         <div class="col-12 col-lg-4 col-md-6 col-sm-12">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <form class="add-vacancy-form" enctype="multipart/form-data">
+                    <form class="add-purchase-form" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Назва вакансії</label>
-                            <input type="text" class="form-control title" required>
+                            <label for="short_description" class="form-label">Короткий опис закупівлі (до 30 символів)<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control short_description" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="description" class="form-label">Опис вакансії</label>
-                            <div class="description editor"></div>
+                            <label for="file" class="form-label">Файл (.doc, .docx, .xls, .xlsx)<span class="text-danger">*</span></label>
+                            <input class="form-control file" type="file" name="file" required>
                         </div>
     
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary add-vacancy-submit">Додати</button>
+                            <button type="submit" class="btn btn-primary add-purchase-submit">Додати</button>
                         </div>
                     </form>
                 </div>
@@ -79,4 +85,4 @@
     </div>
 </div>
 
-<script src="{% static 'pages/js/admin/tabs/vacancies_actions.js' %}" type="module"></script>
+<script src="{% static 'pages/js/admin/tabs/purchases_actions.js' %}" type="module"></script>

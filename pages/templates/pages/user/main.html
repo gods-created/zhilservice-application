@@ -6,28 +6,24 @@
     <div class="py-5 bg-body-tertiary">
         <div class="container">
             {% if news.object_list %}
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2">
+                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-2">
                     {% for item in news %}
                         <div class="col">
-                            <div class="card shadow-sm bg-dark text-white">
-                                <div class="ratio ratio-1x1">
-                                    <iframe 
-                                        src="{{ item.link }}#toolbar=0" 
-                                        frameborder="0"
-                                        class="p-3"
-                                        width="400"
-                                        height="400"
-                                        scrolling="no"
-                                    >
-                                    </iframe>
-                                </div>
-                                <div class="card-body border-top border-1 border-white">
+                            <div class="card shadow-sm bg-light text-dark">
+                                <div class="card-body border-bottom border-dark border-2">
                                     <div class="d-flex flex-column justify-content-center align-items-center">
+                                        <img class="img-fluid mb-3" src="{{ item.image_source }}" alt="{{ item.image_source }}" width="250" height="250">
                                         <p class="m-0 my-1 text-center card-text">
-                                            {{ item.title }}
+                                            <span class="d-block mb-2 fw-bold news-title">
+                                                {{ item.title }}
+                                            </span>
+
+                                            <span class="d-none mb-2 news-description description-item">
+                                                {{ item.description }}
+                                            </span>
                                         </p>
                                         <div class="btn-group my-1">
-                                            <a href="{{ item.link }}" target="_blank" type="button" class="btn btn-sm btn-outline-light">Детальніше</a>
+                                            <a href="" type="button" class="btn btn-sm btn-outline-dark more-info-button">Детальніше</a>
                                         </div>
                                     </div>
                                 </div>
@@ -63,7 +59,8 @@
                                     {% endif %}
                                     &raquo;</a>
                                 </li>
-
+                            </ul>
+                        </nav>
                     </span>
                 </div>
             {% else %}
@@ -71,4 +68,5 @@
             {% endif %}
         </div>
     </div>
+
 {% endblock %}
