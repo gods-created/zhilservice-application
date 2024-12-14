@@ -21,14 +21,15 @@ class PurchasesActions(Base):
             if not s3_bucket:
                 raise Exception('Не вдалося зберегти інформацію щодо закупівлі через відсутнє з\'єднання з S3.')
 
-            if not file.name.endswith(('.docx', '.doc', '.xlsx', '.xls')):
+            uploaded_filename = file.name.lower()
+            if not uploaded_filename.endswith(('.docx', '.doc', '.xlsx', '.xls')):
                 raise ValueError(f'Файл некоректного формату.')
 
             purchase, _ = Purchases.objects.get_or_create(
                 short_description=short_description
             )
             
-            filename = f'{purchase.id}_{file.name}'
+            filename = f'{purchase.id}_{uploaded_filename}'
             purchase.file_source = f'https://{self.aws_bucket_name}.s3.us-east-1.amazonaws.com/purchases/{filename}'
             purchase.save()
 

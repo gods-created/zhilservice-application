@@ -16,9 +16,14 @@
                             {% for item in vacancies %}
                                 <tr>
                                     <td>
-                                        <p class="m-0 p-0">
+                                        <p class="m-0 p-0 start-vacancy-edit">
                                             {{ item.title }}
                                         </p>
+                                    </td>
+                                    <td class="d-none">
+                                        <span>
+                                            {{ item.description }}
+                                        </span>
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center justify-content-center">
@@ -70,7 +75,7 @@
                         </div>
     
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary add-vacancy-submit">Додати</button>
+                            <button type="submit" class="btn btn-primary add-vacancy-submit">Зберегти</button>
                         </div>
                     </form>
                 </div>

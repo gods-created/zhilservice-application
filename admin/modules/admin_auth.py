@@ -68,7 +68,8 @@ class AdminAuth(Base):
                 break
             
             document, document_filename = document_object
-
+            document_filename = document_filename.lower()
+            
             if not document_filename.endswith(('.xls', '.xlsx')):
                 raise ValueError('Некоректний формат завантаженого файла.')
 

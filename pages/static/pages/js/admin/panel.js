@@ -2,6 +2,7 @@ import { HREF, logout } from '../app.js';
 
 const LOGOUT_BTN = $('.logout');
 const TEXTAREA_CLASS = 'div.description.editor';
+export var QUILL = null;
 
 function underline_active_tab() {
     let add_accounts_block = $('.add-accounts-block');
@@ -42,7 +43,7 @@ $(document).ready(async () => {
     })
 
     if ($(TEXTAREA_CLASS).length !== 0) {
-        new Quill(TEXTAREA_CLASS, {
+        QUILL = new Quill(TEXTAREA_CLASS, {
             theme: 'snow'
         });
     }

@@ -36,7 +36,9 @@ async def get_elements(items: str = 'news') -> list:
         )
 
     all_items = response_json.get('items', [])
-
+    if len(all_items) > 0:
+        all_items = all_items[::-1]
+        
     return all_items
 
 async def _main_page(request) -> Any:
@@ -130,16 +132,16 @@ async def _contacts_page(request) -> Any:
             status = 405
             raise Exception(f'Використання методу {method} неможливе.')
 
-        tel = getenv('DISPETCHER_TELEPHONE_NUMBER', '+')
-        email = getenv('COMPANY_EMAIL', '')
         send_invocation_response = json.loads(request.COOKIES.get('send_invocation_response', '{}'))
             
         response = render(
             request, 'pages/user/contacts.html', {
                 'form': SendInvocationForm,
                 'response': send_invocation_response,
-                'tel': tel,
-                'email': email,
+                'dispetcher_telephone_number': getenv('DISPETCHER_TELEPHONE_NUMBER', '+'),
+                'cherkaske_accounter_telephone_number': getenv('CHERKASKE_ACCOUNTER_TELEPHONE_NUMBER', '+'),
+                'zarichne_accounter_telephone_number': getenv('ZARICHNE_ACCOUNTER_TELEPHONE_NUMBER', '+'),
+                'company_email': getenv('COMPANY_EMAIL', ''),
             }
         )
 

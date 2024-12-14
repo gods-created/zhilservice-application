@@ -46,3 +46,7 @@ footer {
   min-height: 300px;
   max-height: 300px;
 }
+
+.start-vacancy-edit {
+  cursor: pointer;
+}

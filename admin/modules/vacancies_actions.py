@@ -2,7 +2,7 @@ from .base import Base
 from copy import deepcopy
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, select, delete
+from sqlalchemy import create_engine, select, delete, and_
 from os import getenv
 from loguru import logger
 from ..migrations.vacancies.models import VacanciesModel
@@ -99,6 +99,34 @@ class VacanciesActions(Base):
         finally:
             return response_json
     
+    def __select_vacancy(self, db: Session, **kwargs) -> dict:
+        response_json = deepcopy(self.response_json)
+
+        try:
+            vacancy_id, vacancy_title = kwargs.get('vacancy_id', None), kwargs.get('vacancy_title', None)
+            if not any((vacancy_id, vacancy_title)):
+                raise ValueError('Недостатньо даних для виконання запиту!')
+
+            stmt = select(VacanciesModel)
+            if vacancy_id and not vacancy_title:
+                stmt = stmt.where(VacanciesModel.id == vacancy_id)
+            elif vacancy_title and not vacancy_id:
+                stmt = stmt.where(VacanciesModel.title == vacancy_title)
+            elif vacancy_id and vacancy_title:
+                stmt = stmt.where(
+                    and_(VacanciesModel.id == vacancy_id, VacanciesModel.title == vacancy_title)
+                )
+
+            vacancy = db.scalars(stmt).first()
+            response_json['vacancy'] = vacancy.to_json() if vacancy else {}
+            response_json['status'] = 'success'
+
+        except (ValueError, Exception, ) as e:
+            response_json['err_description'] = str(e)
+        
+        finally:
+            return response_json
+    
     def __add_vacancy(self, title: str, description: str) -> dict:
         response_json = deepcopy(self.response_json)
         db = self.db
@@ -107,19 +135,31 @@ class VacanciesActions(Base):
             if not db:
                 raise Exception('Не вдалося з\'єднатися с БД.')
 
-            new_vacancy = VacanciesModel(
-                title=title,
-                description=description
-            )
+            select_vacancy_response = self.__select_vacancy(db, vacancy_title=title)
 
-            db.add(new_vacancy)
+            exists_vacancy = select_vacancy_response.get('vacancy', {})
+            logger.info(exists_vacancy)
+
+            if exists_vacancy:
+                db.query(VacanciesModel).filter(VacanciesModel.title == title).update({
+                    VacanciesModel.description: description
+                })
+            
+            else:
+                new_vacancy = VacanciesModel(
+                    title=title,
+                    description=description
+                )
+                logger.info(new_vacancy)
+
+                db.add(new_vacancy)
+            
             db.commit()
 
             response_json['status'] = 'success'
 
-        except (SQLAlchemyError, Exception, ) as e:
-            err_description = str(e) if 'unique' not in str(e).lower() else 'Подібна вакансія вже існує.'
-            response_json['err_description'] = err_description
+        except (Exception, ) as e:
+            response_json['err_description'] = str(e)
             if db:
                 db.rollback()
 
