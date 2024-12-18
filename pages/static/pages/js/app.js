@@ -141,12 +141,54 @@ function edit_description_items() {
     }
 }
 
+function make_news_image_bigger() {
+    function window_builder(link) {
+        if (!link) return;
+
+        const mainDiv = document.createElement('div');
+        mainDiv.classList.add('modal', 'd-block', 'news-image-bigger');
+        mainDiv.addEventListener('click', (e) => {
+            const target = e.currentTarget;
+            target.remove();
+        })
+
+        const dialogBlock = document.createElement('div');
+        dialogBlock.classList.add('modal-dialog', 'modal-dialog-centered', 'modal-dialog-scrollable');
+
+        const contentBlock = document.createElement('div');
+        contentBlock.classList.add('modal-content');
+
+        const bodyBlock = document.createElement('div');
+        bodyBlock.classList.add('modal-body');
+
+        const imageBlock = document.createElement('img');
+        imageBlock.src = link;
+        imageBlock.classList.add('img-fluid');
+        
+        bodyBlock.appendChild(imageBlock);
+        contentBlock.appendChild(bodyBlock);
+        dialogBlock.appendChild(contentBlock);
+        mainDiv.appendChild(dialogBlock);
+
+        document.body.appendChild(mainDiv);
+    }
+
+    const blocks = $('.news-image');
+    if (blocks.length > 0) {
+        blocks.off('click').on('click', (e) => {
+            const target = e.currentTarget;
+            const link = $(target).attr('src');
+            window_builder(link)
+        })
+    }
+}
+
 $(document).ready(async () => {
     load_current_year();
     underline_active_tab();
     correct_phone_input();
     edit_description_items();
-    
+    make_news_image_bigger();
 
     OPEN_DEBT_MODAL_BUTTON.off('click').on('click', () => {
         open_debt_modal();

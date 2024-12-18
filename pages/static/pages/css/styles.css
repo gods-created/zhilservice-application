@@ -47,6 +47,10 @@ footer {
   max-height: 300px;
 }
 
-.start-vacancy-edit {
+.start-vacancy-edit, .news-image  {
   cursor: pointer;
+}
+
+figcaption > span{
+  font-size: 0.8rem !important;
 }

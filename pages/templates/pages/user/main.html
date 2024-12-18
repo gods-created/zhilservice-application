@@ -12,7 +12,12 @@
                             <div class="card shadow-sm bg-light text-dark">
                                 <div class="card-body border-bottom border-dark border-2">
                                     <div class="d-flex flex-column justify-content-center align-items-center">
-                                        <img class="img-fluid mb-3" src="{{ item.image_source }}" alt="{{ item.image_source }}" width="250" height="250">
+                                        <figure class="d-flex flex-column align-items-center justify-content-center">
+                                            <img class="img-fluid mb-3 news-image" src="{{ item.image_source }}" alt="{{ item.image_source }}" width="250" height="250">
+                                            <figcaption class="text-center text-secondary">
+                                                <span>натисни на зображення, щоб збільшити</span>
+                                            </figcaption>
+                                        </figure>
                                         <p class="m-0 my-1 text-center card-text">
                                             <span class="d-block mb-2 fw-bold news-title">
                                                 {{ item.title }}
